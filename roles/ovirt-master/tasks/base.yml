@@ -1,0 +1,46 @@
+---
+- name: Install EPEL
+  yum name=epel-release state=present
+
+- name: Install Services
+  yum name={{ item }} state=present
+  with_items:
+    - unbound
+    - nsd
+    - dhcp
+
+- name: Copy NSD Config
+  copy: src=nsd.conf dest=/etc/nsd/nsd.conf owner=root group=root mode=0640 validate='nsd-checkconf %s'
+  notify:
+    - nsd
+
+- name: Add Master Zones
+  copy: src={{ item }} dest=/etc/nsd/{{ item }} owner=root group=root mode=0640
+  with_items:
+    - cluster.lug.utdallas.edu
+    - 42.16.172.in-addr.arpa
+  notify:
+    - nsd
+
+- name: Copy Unbound Config
+  template: src=unbound.conf dest=/etc/unbound/unbound.conf owner=root group=unbound mode=0644 validate='unbound-checkconf /etc/unbound/unbound.conf'
+  notify:
+    -unbound
+
+- name: Run NSD Trust Setup
+  command: nsd-control-setup
+
+- name: Run Unbound Trust Setup
+  command: unbound-control-setup
+
+- name: Enable NSD
+  service: name=nsd enabled=yes
+
+- name: Start NSD
+  service: name=nsd state=started
+
+- name: Enable Unbound
+  service: name=unbound enabled=yes
+
+- name: Start Unbound
+  service: name=unbound state=started

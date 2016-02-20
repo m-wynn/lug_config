@@ -1,0 +1,6 @@
+---
+- name: unbound
+  service: name=unbound state=restarted
+
+- name: nsd
+  service: name=nsd state=restarted

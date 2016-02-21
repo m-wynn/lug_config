@@ -1,4 +1,7 @@
 ---
+- name: Install python selinux
+  yum: name=libselinux-python state=present
+
 - name: Install EPEL
   yum: name=epel-release state=present
 
@@ -20,6 +23,9 @@
 - name: Copy ifup-local file
   copy: src=ifup-local dest=/sbin/ifup-local owner=root group=root mode=0740
 
+- name: Create iptables directory
+  file: path=/etc/iptables.d state=directory owner=root group=root mode=0750
+
 - name: Configure IPv4 firewall
   copy: src=cluster.rules dest=/etc/iptables.d/cluster.rules owner=root group=root mode=0640
   notify:
@@ -39,7 +45,7 @@
     - nsd
 
 - name: Copy Unbound Config
-  template: src=unbound.conf dest=/etc/unbound/unbound.conf owner=root group=unbound mode=0644 validate='unbound-checkconf /etc/unbound/unbound.conf'
+  template: src=unbound.conf dest=/etc/unbound/unbound.conf owner=root group=unbound mode=0644 validate='unbound-checkconf %s'
   notify:
     -unbound
 

@@ -17,9 +17,10 @@
 - name: Install iptables
   yum: name=iptables state=present
 
-- name: Add iptables script
-  copy: src=iptables dest=/usr/local/bin/iptables owner=root group=root mode=0740
-
+- name: Enable forwarding
+  copy: src=sysctl.conf dest=/etc/sysctl.conf owner=root group=root mode=0644
+  register: sysctlconf
+  
 - name: Copy ifup-local file
   copy: src=ifup-local dest=/sbin/ifup-local owner=root group=root mode=0740
 
@@ -80,7 +81,7 @@
   
 - name: Restart Network
   command: /etc/init.d/network restart
-  when: sysconfigeth1.changed or sysconfigeth0.changed
+  when: sysconfigeth1.changed or sysconfigeth0.changed or sysctlconf.changed
   
 - name: Copy DHCP Config
   template: src=dhcpd.conf dest=/etc/dhcp/dhcpd.conf owner=root group=root mode=0644

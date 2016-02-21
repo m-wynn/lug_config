@@ -1,6 +1,6 @@
 ---
 - name: iptables
-  command: /etc/network/if-up.d/iptables
+  command: /sbin/ifup-local
 
 - name: unbound
   service: name=unbound state=reloaded

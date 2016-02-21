@@ -1,3 +1,2 @@
 #!/bin/sh
-
-/usr/local/bin/iptables
+iptables-restore < /etc/iptables.d/cluster.rules

@@ -15,10 +15,10 @@
   yum: name=iptables state=present
 
 - name: Add iptables script
-  copy: src=iptables dest=/etc/network/if-up.d/iptables owner=root group=root mode=0740
+  copy: src=iptables dest=/usr/local/bin/iptables owner=root group=root mode=0740
 
-- name: Make iptables.d
-  file: path=/etc/iptables.d state=directory owner=root group=root mode=0740
+- name: Copy ifup-local file
+  copy: src=ifup-local dest=/sbin/ifup-local owner=root group=root mode=0740
 
 - name: Configure IPv4 firewall
   copy: src=cluster.rules dest=/etc/iptables.d/cluster.rules owner=root group=root mode=0640

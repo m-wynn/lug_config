@@ -1,0 +1,3 @@
+---
+internal_ip: "eth1"
+dhcpd_range: "172.16.42.2 172.16.42.30"

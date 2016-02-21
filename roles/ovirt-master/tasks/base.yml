@@ -1,9 +1,9 @@
 ---
 - name: Install EPEL
-  yum name=epel-release state=present
+  yum: name=epel-release state=present
 
-- Name: Install Services
-  yum name={{ item }} state=present
+- name: Install Services
+  yum: name={{ item }} state=present
   with_items:
     - unbound
     - nsd
@@ -12,7 +12,7 @@
     - ntpdate
 
 - name: Install iptables
-  yum name=iptables state=present
+  yum: name=iptables state=present
 
 - name: Add iptables script
   copy: src=iptables dest=/etc/network/if-up.d/iptables owner=root group=root mode=0740

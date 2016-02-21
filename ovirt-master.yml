@@ -1,0 +1,5 @@
+---
+- hosts: ovirt-master
+  sudo: yes
+  roles:
+  - ovirt-master

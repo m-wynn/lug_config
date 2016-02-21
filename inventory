@@ -12,3 +12,6 @@ luggable-gw
 
 [luggable]
 luggable
+
+[ovirt-master]
+cluster-master

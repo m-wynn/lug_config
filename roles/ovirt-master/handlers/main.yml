@@ -9,4 +9,4 @@
   service: name=nsd state=reloaded
 
 - name: dhcp
-  service: name=dhcp state=reloaded
+  service: name=dhcpd state=reloaded

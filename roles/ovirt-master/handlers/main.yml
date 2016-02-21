@@ -3,7 +3,10 @@
   command: /etc/network/if-up.d/iptables
 
 - name: unbound
-  service: name=unbound state=restarted
+  service: name=unbound state=reloaded
 
 - name: nsd
-  service: name=nsd state=restarted
+  service: name=nsd state=reloaded
+
+- name: dhcp
+  service: name=dhcp state=reloaded

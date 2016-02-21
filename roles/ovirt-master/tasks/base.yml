@@ -8,6 +8,8 @@
     - unbound
     - nsd
     - dhcp
+    - ntp
+    - ntpdate
 
 - name: Install iptables
   yum name=iptables state=present
@@ -58,3 +60,20 @@
 
 - name: Start Unbound
   service: name=unbound state=started
+
+- name: Copy DHCP Config
+  template: src=dhcpd.conf dest=/etc/dhcpd.conf owner=root group=root mode=0644
+  notify:
+    - dhcp
+
+- name: Enable DHCP
+  service: name=dhcp enabled=yes
+
+- name: Start DHCP
+  service: name=dhcp state=started
+
+- name: Enable NTP
+  service: name=ntp enabled=yes
+
+- name: Start NTP
+  service: name=ntp state=started

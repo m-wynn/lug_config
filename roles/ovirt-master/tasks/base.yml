@@ -2,12 +2,26 @@
 - name: Install EPEL
   yum name=epel-release state=present
 
-- name: Install Services
+- Name: Install Services
   yum name={{ item }} state=present
   with_items:
     - unbound
     - nsd
     - dhcp
+
+- name: Install iptables
+  yum name=iptables state=present
+
+- name: Add iptables script
+  copy: src=iptables dest=/etc/network/if-up.d/iptables owner=root group=root mode=0740
+
+- name: Make iptables.d
+  file: path=/etc/iptables.d state=directory owner=root group=root mode=0740
+
+- name: Configure IPv4 firewall
+  copy: src=cluster.rules dest=/etc/iptables.d/cluster.rules owner=root group=root mode=0640
+  notify:
+  - iptables
 
 - name: Copy NSD Config
   copy: src=nsd.conf dest=/etc/nsd/nsd.conf owner=root group=root mode=0640 validate='nsd-checkconf %s'
